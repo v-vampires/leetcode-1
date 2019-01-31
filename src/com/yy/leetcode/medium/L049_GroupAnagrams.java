@@ -1,6 +1,6 @@
 package com.yy.leetcode.medium;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by fitz.li on 2019/1/23.
@@ -18,11 +18,31 @@ public class L049_GroupAnagrams {
 
     private static class Solution {
         public List<List<String>> groupAnagrams(String[] strs) {
-            return null;
+            List<List<String>> ret = new ArrayList<>();
+            Map<String, List<String>> map = new HashMap<>();
+            if(strs == null || strs.length <= 1){
+                ret.add(Arrays.asList(strs));
+                return ret;
+            }
+            for (int i = 0; i < strs.length; i++) {
+                String str = strs[i];
+                char[] chars = str.toCharArray();
+                Arrays.sort(chars);
+                String newStr = String.valueOf(chars);
+                List<String> strings = map.get(newStr);
+                if(strings == null){
+                    strings = new ArrayList<>();
+                    map.put(newStr, strings);
+                    ret.add(strings);
+                }
+                strings.add(str);
+            }
+            return ret;
         }
     }
 
     public static void main(String[] args) {
-        new Solution().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
+        List<List<String>> lists = new Solution().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
+        System.out.println(lists);
     }
 }
