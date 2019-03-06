@@ -24,20 +24,20 @@ package com.yy.leetcode.medium;
 public class L055_CanJump {
     private static class Solution {
         public boolean canJump(int[] nums) {
-            if(nums.length == 1) return true;
-            if(nums[0] == 0) return false;
-            int i = 0;
-            while(i < nums.length - 1){
-                int num = nums[i];
-                i = i + num;
-                if(i >= nums.length){
-                    return true;
-                }
-                if(num == 0){
-                    for (int j = i-1; j >=0 ; j--) {
-                        if(j + nums[j] > i){
+            if(nums.length == 0 || nums.length == 1) return true;
+            for (int i = 0; i < nums.length; i++) {
+                if(nums[i]==0){
+                    int j = i-1;
+                    boolean can = false;
+                    while(j>=0){
+                        if(nums[j] + j > i || (nums[j] + j == i && i == nums.length -1 )){
+                            can = true;
                             break;
                         }
+                        j--;
+                    }
+                    if(!can){
+                        return false;
                     }
                 }
             }
@@ -45,8 +45,21 @@ public class L055_CanJump {
         }
     }
 
+    private static class Solution1 {
+        public boolean canJump(int[] nums) {
+            if(nums.length == 0 || nums.length == 1) return true;
+            int lastIndex = nums.length - 1;
+            for (int i = lastIndex-1; i >=0 ; i--) {
+                if(nums[i] + i >= lastIndex){
+                    lastIndex = i;
+                }
+            }
+            return lastIndex == 0;
+        }
+    }
+
     public static void main(String[] args) {
-        boolean b = new Solution().canJump(new int[]{2,5,0,0});
+        boolean b = new Solution1().canJump(new int[]{2,0,0});
         System.out.println(b);
     }
 }

@@ -34,6 +34,8 @@ import java.util.Set;
  *
  * 输入: m = 7, n = 3
  * 输出: 28
+ *
+ * 实现思路：动态规划：由于只能向右和向下，那么当走到当前格=走到左边的路径数+走到右边的路径数
  */
 public class L062_UniquePaths {
 
@@ -89,7 +91,23 @@ public class L062_UniquePaths {
         }
     }
 
+    private static class Solution2 {
+        public int uniquePaths(int m, int n) {
+            int[][] roadNum = new int[n][m];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if(i > 0 && j>0){
+                        roadNum[i][j] = roadNum[i-1][j] + roadNum[i][j-1];
+                    }else{
+                        roadNum[i][j] = 1;
+                    }
+                }
+            }
+            return roadNum[n-1][m-1];
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Solution1().uniquePaths(1,1));
+        System.out.println(new Solution2().uniquePaths(7,3));
     }
 }

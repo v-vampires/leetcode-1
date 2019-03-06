@@ -48,8 +48,28 @@ public class L077_Combine {
         }
     }
 
+    private static class Solution1{
+        public List<List<Integer>> combine(int n, int k) {
+            List<List<Integer>> ans = new ArrayList<>();
+            dfs(ans, new ArrayList<>(), 1, n, k);
+            return ans;
+        }
+
+        private void dfs(List<List<Integer>> ans, List<Integer> tmp,int start, int n, int k){
+            if(k==0){
+                ans.add(new ArrayList<>(tmp));
+                return;
+            }
+            for (int i = start; i <= n; i++) {
+                tmp.add(i);
+                dfs(ans, tmp, i+1, n, k-1);
+                tmp.remove(tmp.size() -1 );
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        List<List<Integer>> combine = new Solution().combine(4, 2);
+        List<List<Integer>> combine = new Solution1().combine(4, 2);
         System.out.println(combine);
     }
 }

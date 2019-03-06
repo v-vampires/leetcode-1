@@ -12,35 +12,11 @@ public class L024_SwapPairs {
 
     private static class Solution {
         public ListNode swapPairs(ListNode head) {
-            if (head == null || head.next == null) return head;
-            ListNode newNode = null;
-            ListNode pre = null;
-            ListNode cur = head;
-            ListNode next = cur.next;
-            while (next != null) {
-                pre = cur;
-                cur.next = next.next;
-                next.next = cur;//已经交换完
-
-
-                if (newNode == null) {
-                    newNode = next;
-                }
-                cur = cur.next;
-                next = cur != null ? cur.next : null;
-            }
-
-            return newNode;
-        }
-    }
-
-    private static class Solution1 {
-        public ListNode swapPairs(ListNode head) {
-            if (head == null || head.next == null) return head;
-            ListNode dump = new ListNode(0);
-            dump.next = head;
-            head = dump;
-            while (head.next != null && head.next.next != null) {
+            if(head == null || head.next == null) return head;
+            ListNode dummy = new ListNode(-1);
+            dummy.next = head;
+            head = dummy;
+            while (head.next != null && head.next.next != null){
                 ListNode n1 = head.next;
                 ListNode n2 = head.next.next;
                 head.next = n2;
@@ -48,25 +24,51 @@ public class L024_SwapPairs {
                 n2.next = n1;
                 head = n1;
             }
-            return dump.next;
+            return dummy.next;
+        }
+    }
+
+
+    private static class Solution1 {
+        public ListNode swapPairs(ListNode head) {
+            if (head == null || head.next == null) return head;
+            ListNode dump = null;
+            ListNode pre = null;
+            while (head != null && head.next != null){
+                ListNode next = head.next;
+                ListNode next1 = next.next;
+                head.next = null;
+                next.next = head;
+                if(dump == null ) dump = next;
+                if(pre != null) pre.next = next;
+                pre = head;
+                head = next1;
+            }
+            if(head != null) pre.next = head;
+            return dump;
+        }
+    }
+
+    /**
+     * 递归实现
+     */
+    private static class Solution2 {
+        public ListNode swapPairs(ListNode head) {
+            if (head == null || head.next == null) return head;
+            ListNode n1 = head.next;
+            ListNode n2 = head.next.next;
+            head.next = null;
+            n1.next = head;
+            head.next = swapPairs(n2);
+            return n1;
         }
     }
 
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(1);
-        ListNode l2 = new ListNode(2);
-        ListNode l3 = new ListNode(3);
-        ListNode l4 = new ListNode(4);
-        ListNode l5 = new ListNode(5);
-        ListNode l6 = new ListNode(6);
-        l1.next = l2;
-        l2.next = l3;
-        l3.next = l4;
-        l4.next = l5;
-        l5.next = l6;
+        ListNode l1 = ListNode.of(new int[]{1,2,3,4,5});
         System.out.println(l1);
 
-        ListNode ll = new Solution1().swapPairs(l1);
+        ListNode ll = new Solution2().swapPairs(l1);
         System.out.println(ll);
     }
 }
